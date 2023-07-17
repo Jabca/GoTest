@@ -1,0 +1,78 @@
+basePath: /
+definitions:
+  gorm.DeletedAt:
+    properties:
+      time:
+        type: string
+      valid:
+        description: Valid is true if Time is not NULL
+        type: boolean
+    type: object
+  model.InputImage:
+    properties:
+      image:
+        type: string
+    type: object
+  model.StoredImage:
+    properties:
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      id:
+        type: integer
+      negative_image:
+        type: string
+      positive_image:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+host: localhost:8000
+info:
+  contact: {}
+  description: This is init
+  version: "1.0"
+paths:
+  /api/notification/:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: The image in format base64
+        in: body
+        name: image
+        required: true
+        schema:
+          $ref: '#/definitions/model.InputImage'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+      summary: Return the negative images
+      tags:
+      - images
+  /get_last_images:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.StoredImage'
+        "500":
+          description: Internal Server Error
+      summary: Return three last images
+      tags:
+      - images
+schemes:
+- http
+swagger: "2.0"
